@@ -284,28 +284,4 @@ cd client
 npm run build
 ```
 
-### Environment Setup
-- Configure production Firebase project
-- Set up production API endpoints
-- Configure SSL certificates
-- Set up monitoring and logging
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Contact
-
-For questions, suggestions, or collaboration opportunities:
-- GitHub Issues: [Project Issues](https://github.com/your-username/BerkeleyBets/issues)
-- Email: your-email@example.com
-
-## Acknowledgments
-
-- UC Berkeley for academic support and resources
-- Open source sports data providers
-- The React and Python communities for excellent documentation and tools
-
----
-
 **Disclaimer**: This platform is for educational and entertainment purposes. Users should be aware of local gambling laws and practice responsible betting habits.
