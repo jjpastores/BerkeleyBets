@@ -1,15 +1,12 @@
-# fly.toml app configuration file generated for berkeleybets-7snqeg on 2025-06-22T16:19:17Z
+# fly.toml app configuration file generated for berkbets on 2025-06-23T10:29:37Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'berkeleybets-7snqeg'
-primary_region = 'lax'
+app = 'berkbets'
+primary_region = 'sjc'
 
 [build]
-
-[env]
-  PORT = '8080'
 
 [http_service]
   internal_port = 3001
