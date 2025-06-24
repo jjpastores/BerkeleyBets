@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for berkbets on 2025-06-23T10:29:37Z
+# fly.toml app configuration file generated for berkeleybets-wu136q on 2025-06-24T01:54:41Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'berkbets'
+app = 'berkeleybets-wu136q'
 primary_region = 'sjc'
 
 [build]
