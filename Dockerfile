@@ -1,39 +1,53 @@
 # syntax = docker/dockerfile:1
 
-# Adjust NODE_VERSION as desired
 ARG NODE_VERSION=20.18.0
 FROM node:${NODE_VERSION}-slim as base
 
 LABEL fly_launch_runtime="NodeJS"
 
-# NodeJS app lives here
+# Install Python and pip
+RUN apt-get update -qq && \
+    apt-get install -y python3 python3-pip python3-venv && \
+    ln -s /usr/bin/python3 /usr/bin/python
+
 WORKDIR /app
 
 # Set production environment
 ENV NODE_ENV=production
 
+# Create Python virtual environment
+RUN python3 -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
 
-# Throw-away build stage to reduce size of final image
+# Install Python dependencies
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
 FROM base as build
 
-# Install packages needed to build node modules
-RUN apt-get update -qq && \
-    apt-get install -y python-is-python3 pkg-config build-essential 
-
 # Install node modules
-COPY --link package.json package-lock.json .
-RUN npm install
+COPY package*.json ./
+RUN npm ci --only=production && npm cache clean --force
 
 # Copy application code
-COPY --link . .
+COPY . .
 
-
-
-# Final stage for app image
 FROM base
 
-# Copy built application
-COPY --from=build /app /app
+# Copy Python virtual environment
+COPY --from=base /opt/venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
 
-# Start the server by default, this can be overwritten at runtime
-CMD [ "npm", "run", "start" ]
+# Copy built application
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app .
+
+# Expose port
+EXPOSE 3001
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:3001/health || exit 1
+
+# Start the server
+CMD ["npm", "start"]

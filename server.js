@@ -4,11 +4,13 @@ const { spawn } = require('child_process');
 const path = require('path');
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:3002', 'http://localhost:5173'],
+  origin: process.env.NODE_ENV === 'production' 
+    ? ['https://berkeleybets.vercel.app', 'https://your-custom-domain.com']
+    : ['http://localhost:3002', 'http://localhost:5173'],
   credentials: true
 }));
 app.use(express.json());
@@ -267,9 +269,9 @@ app.get('/api/mlb/search', async (req, res) => {
 });
 
 // Start server
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 BerkeleyBets Backend running on port ${PORT}`);
-  console.log(`📊 Environment: development`);
+  console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`🔗 Health check: http://localhost:${PORT}/health`);
   console.log(`🏈 NFL API: http://localhost:${PORT}/api/nfl`);
   console.log(`🏀 NBA API: http://localhost:${PORT}/api/nba`);

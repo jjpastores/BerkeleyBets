@@ -3,24 +3,29 @@
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'berkeleybets-7snqeg'
+app = 'berkeleybets-wu136q'
 primary_region = 'lax'
 
 [build]
 
 [env]
-  PORT = '8080'
+  NODE_ENV = "production"
+  PORT = "3001"
 
 [http_service]
   internal_port = 3001
   force_https = true
   auto_stop_machines = 'stop'
   auto_start_machines = true
-  min_machines_running = 0
+  min_machines_running = 1
   processes = ['app']
 
 [[vm]]
-  memory = '1gb'
+  memory = '2gb'
   cpu_kind = 'shared'
-  cpus = 1
-  memory_mb = 1024
+  cpus = 2
+  memory_mb = 2048
+
+[mounts]
+  source = "berkeleybets_data"
+  destination = "/app/data"

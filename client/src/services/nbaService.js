@@ -1,4 +1,6 @@
-const API_BASE_URL = 'http://localhost:3001/api/nba';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL 
+  ? `${import.meta.env.VITE_API_BASE_URL}/api/nba`
+  : 'http://localhost:3001/api/nba';
 
 class NBAService {
   async fetchAllPlayers() {
